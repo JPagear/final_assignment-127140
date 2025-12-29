@@ -1,0 +1,46 @@
+# playbook-dhcp.yml
+
+---
+- name: Configure DHCP server (Exercise 2)
+  hosts: dhcpservers # Grupo definido no inventory.ini
+  become: yes
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Install isc-dhcp-server
+      apt:
+        name: isc-dhcp-server
+        state: present
+        update_cache: no
+
+    - name: Configure DHCP subnet (10.0.2.0/24)
+      copy:
+        dest: /etc/dhcp/dhcpd.conf
+        content: |
+          default-lease-time 600;
+          max-lease-time 7200;
+          authoritative;          
+          
+          # Configuração para a subnet 10.0.2.0/24
+          subnet 10.0.2.0 netmask 255.255.255.0 {
+            range 10.0.2.100 10.0.2.200;     # Pool de IPs para clientes
+            option routers 10.0.2.1;         # Gateway
+            option domain-name-servers 8.8.8.8, 8.8.4.4; # DNS
+            option domain-name "local";
+          }
+      notify: restart dhcp
+
+    - name: Ensure isc-dhcp-server is enabled and started
+      service:
+        name: isc-dhcp-server
+        state: started
+        enabled: yes
+
+  handlers:
+    - name: restart dhcp
+      service:
+        name: isc-dhcp-server
+        state: restarted

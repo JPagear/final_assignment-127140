@@ -1,0 +1,17 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+terraform.tfvars
+
+# Ansible
+inventory.ini
+.vault_pass.txt
+
+# SSH keys
+*.pem
+id_rsa
+id_rsa.pub
+
+# OS / editor
+.DS_Store
