@@ -2,6 +2,7 @@
 - name: Install and Configure Nginx
   hosts: webservers
   become: yes
+
   tasks:
     - name: Update apt cache
       apt:
@@ -19,22 +20,8 @@
         state: started
         enabled: yes
 
-    - name: Create a custom index.html
-      copy:
-        content: |
-          <!DOCTYPE html>
-          <html>
-          <head>
-              <title>Welcome to Nginx on Azure!</title>
-              <style>
-                  body { font-family: sans-serif; text-align: center; padding: 50px; }
-                  h1 { color: #0078d4; }
-              </style>
-          </head>
-          <body>
-              <h1>Success! Nginx is running on your Azure VM.</h1>
-              <p>Provisioned with Terraform and configured with Ansible.</p>
-          </body>
-          </html>
+    - name: Deploy index.html
+      template:
+        src: index.html.j2
         dest: /var/www/html/index.html
         mode: '0644'
