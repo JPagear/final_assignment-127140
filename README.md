@@ -1,4 +1,5 @@
-*Final assignment*
+*Final assignment* - João Almeida - 127140
+projeto realizado sozinho
 
 team:  max group of 3 people
 
@@ -17,3 +18,4 @@ Exercise 2:
 3. use Terraform and Ansible (zero manual configuration)
 4. make sure that no passwords are stored in scripts
 5. delivery the code in a github repo
+
